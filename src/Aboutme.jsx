@@ -9,8 +9,6 @@ export default function AboutMe({
   linkedinUrl = "https://www.linkedin.com/in/jitesh-sonkusare-11b118198/", 
   theme = "tokyonight",
 }) {
-  const statCardBase = `https://github-readme-stats.vercel.app/api`;
-
   return (
     <section
       id="about"
