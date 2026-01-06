@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import p5 from "p5";
 import { motion } from "framer-motion";
 import { ChevronDown, Github, Linkedin, FileText } from "lucide-react";
+import profileImg from "./assets/profile.png"; 
 
 export default function Hero({
   name = "Jitesh Sonkusare",
@@ -75,7 +76,7 @@ export default function Hero({
       const makePlanningWorld = () => {
         buildTextZone();
 
-        start = { x: w * 0.16, y: h * 0.60 };
+        start = { x: w * 0.16, y: h * 0.70 };
         goal = { x: w * 0.86, y: h * 0.10 };
 
         obstacles = [];
@@ -402,6 +403,25 @@ export default function Hero({
         className="pointer-events-none absolute inset-0 z-0"
         aria-hidden
       />
+      {/* Top-left profile photo (no link) */}
+      <div className="absolute left-30 top-40 z-20 hidden sm:block">
+        <div className="inline-flex items-center gap-3">
+          {/* glow ring */}
+          <div className="relative">
+            <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-sky-300/20 to-teal-300/20 blur-xl opacity-70 transition-opacity" />
+            <div className="relative rounded-full p-[2px] bg-gradient-to-r from-sky-200/70 to-teal-200/70">
+            <img
+              src={profileImg}
+              alt={`${name} profile`}
+              className="h-70 w-70 rounded-full object-cover bg-black/20"
+              loading="lazy"
+              draggable={false}
+            />
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-6">
         <div className="mx-auto max-w-4xl text-center">

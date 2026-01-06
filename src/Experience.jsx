@@ -58,7 +58,29 @@ const experiences = [
     
       "Worked on augmented reality tooling that allowed operators to place virtual markers in a fixed world frame and visualize them in the live camera feed. Implemented 3D-to-2D projection for marker rendering, and added directional cues when markers moved outside the camera’s field of view to guide camera motion intuitively."
     ]
-    
+  },
+
+  {
+    role: "Electrical Engineer Intern",
+    company: "B.G. Shirke Construction Technology Pvt. Ltd.",
+    duration: "May 2021 - Aug 2021",
+    location: "Mumbai, Maharashtra, India",
+    highlights: [
+      "Designed a power distribution network for a mass housing society (Plot 1 & Plot 2, Sec-36, Taloja, Navi Mumbai) in compliance with MSEDCL/MERC guidelines and Development Control (DC) rules.",
+      "Performed end-to-end load estimation from layout plans (BUA → carpet area, connected load norms, diversity factor) and computed demand in kW/kVA using power-factor and 85% loading assumptions.",
+      "Sized 11 kV / 630 kVA transformer capacity (Plot 1: 8 units, Plot 2: 7 units) and selected LV cable sizes by validating ampacity (with derating), short-circuit withstand, and voltage-drop constraints using manufacturer catalogue parameters.",
+    ],
+  },
+
+  {
+    role: "Programming and Circuit Designing Intern",
+    company: "Control and Decision Research Centre",
+    duration: "May 2021 - Jul 2021",
+    location: "Mumbai, Maharashtra, India",
+    highlights: [
+      "Simulated an electric vehicle charging station using Typhoon HIL 602+ and MATLAB/Simulink for control and system validation workflows.",
+      "Built supporting circuit and system models using Proteus to validate behavior prior to implementation.",
+    ],
   },
 ];
 
