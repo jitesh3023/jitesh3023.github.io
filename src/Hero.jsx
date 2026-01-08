@@ -8,7 +8,7 @@ export default function Hero({
   name = "Jitesh Sonkusare",
   greeting = "HI, I’m",
   tagline = "Robotics Software Engineer • Motion Planning • SLAM • Perception • ROS2 C++/Python",
-  resumePath = "/Jitesh_Sonkusare_Resume.pdf",
+  resumePath = "/Jitesh_Sonkusare_Resume_v1.pdf",
   githubUrl = "https://github.com/jitesh3023",
   linkedinUrl = "https://www.linkedin.com/in/jitesh-sonkusare-11b118198/",
 }) {
