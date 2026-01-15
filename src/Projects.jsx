@@ -41,6 +41,11 @@ import sb1 from "./assets/projects/Maze/1.png";
 // biped
 import biped1 from "./assets/projects/biped/1.mp4";
 
+// ADAS
+import carla1 from "./assets/projects/carla_collision_avoidance/1.mp4";
+import carla2 from "./assets/projects/carla_collision_avoidance/2.mp4";
+import carla3 from "./assets/projects/carla_collision_avoidance/3.mp4";
+
 
 
 // Media item format: { type: "image" | "video", src: string }
@@ -386,6 +391,18 @@ const projects = [
       { type: "video", src: biped1 },
     ],
   },
+
+  {
+    title: "Autonomous Navigation + Collision Avoidance in CARLA with ROS 2",
+    desc: "Built an end-to-end autonomous driving pipeline in the CARLA simulator using ROS 2. The vehicle follows waypoint-based routes while continuously monitoring frontal collision risk using RGB, depth, and semantic segmentation sensors. Implemented a vision-based collision monitoring module that detects vehicles/pedestrians in a dynamically scaled danger zone (based on speed) and overrides control with automatic emergency braking (AEB) when stopping distance indicates an imminent collision. Validated the behavior by introducing dynamic obstacles and manually controlled vehicles to test safe slowdown and full-stop responses.",
+    media: [
+      { type: "video", src: carla1 },
+      { type: "video", src: carla2 },
+      { type: "video", src: carla3 },
+    ],
+    previewVideoMode: "full",
+  },
+
 ];
 
 export default function Projects() {
