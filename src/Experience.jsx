@@ -1,4 +1,17 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+// forREAL
+import forrealVid1 from "./assets/projects/3d/1.webm"
+import forrealVid2 from "./assets/projects/3d/2.webm"
+import forrealVid3 from "./assets/projects/3d/3.mp4"
+import forrealImg1 from "./assets/projects/3d/1.png"
+import forrealImg2 from "./assets/projects/3d/2.png"
+import forrealImg3 from "./assets/projects/3d/3.png"
+import forrealVid4 from "./assets/projects/3d/4.mp4"
+import forrealImg4 from "./assets/projects/3d/4.png"
+
+// Drone
 import droneVideo from "./assets/projects/Drone/1.mp4";
 
 const experiences = [
@@ -8,6 +21,17 @@ const experiences = [
     duration: "Apr 2025 - Dec 2025",
     location: "Danvers, MA",
     badge: "2 Patents",
+    media: [
+      { type: "video", src: forrealVid1, caption: "Sparse point cloud generation using Structure from motion" },
+      { type: "video", src: forrealVid2, caption: "3D reconstruction demo" },
+      { type: "video", src: forrealVid3, caption: "Graph Slam in action" },
+      { type: "image", src: forrealImg1, caption: "SLAM 3d occupancy grid visualization in RViz" },
+      { type: "image", src: forrealImg2, caption: "3d object Segmentation components" },
+      { type: "image", src: forrealImg3, caption: "Spatial anchor after 3d segmentation" },
+      { type: "video", src: forrealVid4, caption: "RRT* path planning demo" },
+      { type: "image", src: forrealImg4, caption: "RRT* 2d occupancy grid" },
+      
+    ],
     highlights: [
       "Built an unified 3D reconstruction pipeline centered around a graph-based multi-sensor SLAM system that provides consistent, globally optimized state estimation and online mesh reconstruction from a guided mobile scan. The SLAM backbone fuses RGB cameras (1× and 0.5×), LiDAR, and IMU data, while Gaussian Splatting is generated in parallel for photorealistic virtual tours, and RoomPlan consumes the same spatial state to extract structured 3D layouts and 2D floor plans.",
       
@@ -119,20 +143,175 @@ function Card({ children, delay = 0 }) {
   );
 }
 
+function VideoModal({ open, onClose, src, title }) {
+  const videoRef = useRef(null);
+
+  // Close on ESC
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  // When modal opens, play + allow interaction
+  useEffect(() => {
+    if (!open) return;
+    const v = videoRef.current;
+    if (!v) return;
+  
+    v.muted = true;
+    v.volume = 0;
+  
+    const p = v.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  }, [open]);
+  
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          aria-modal="true"
+          role="dialog"
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={onClose}
+          />
+
+          {/* Modal panel */}
+          <motion.div
+            className="relative w-full max-w-5xl rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl"
+            initial={{ scale: 0.96, y: 12, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.98, y: 8, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 bg-black/60 border-b border-white/10">
+              <div className="text-sm text-gray-200 truncate">
+                {title || "Video"}
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-200/90 hover:text-white text-sm px-3 py-1 rounded-lg bg-white/10 border border-white/10"
+              >
+                Close
+              </button>
+            </div>
+
+            {/* Video */}
+            <div className="bg-black">
+            <video
+              ref={videoRef}
+              src={src}
+              controls
+              muted
+              playsInline
+              preload="metadata"
+              className="w-full h-[55vh] md:h-[70vh] object-contain bg-black"
+              onVolumeChange={(e) => {
+                e.currentTarget.muted = true;
+                e.currentTarget.volume = 0;
+              }}
+              onPlay={(e) => {
+                e.currentTarget.muted = true;
+                e.currentTarget.volume = 0;
+              }}
+            />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function ImageModal({ open, onClose, src, title }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          aria-modal="true"
+          role="dialog"
+        >
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={onClose}
+          />
+
+          <motion.div
+            className="relative w-full max-w-5xl rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl"
+            initial={{ scale: 0.96, y: 12, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.98, y: 8, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex items-center justify-between px-4 py-3 bg-black/60 border-b border-white/10">
+              <div className="text-sm text-gray-200 truncate">
+                {title || "Image"}
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-200/90 hover:text-white text-sm px-3 py-1 rounded-lg bg-white/10 border border-white/10"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="bg-black">
+              <img
+                src={src}
+                alt={title || "Expanded image"}
+                className="w-full h-[55vh] md:h-[70vh] object-contain bg-black"
+                draggable={false}
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+
+
 export default function Experience() {
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [activeImage, setActiveImage] = useState(null);
+
+
   return (
     <section
       id="experience"
       className="relative w-full py-20 px-6 text-white"
       style={{ backgroundColor: "rgb(23, 27, 35)" }}
     >
-      {/* Local-only CSS to hide mute/volume controls (Chrome/Edge) */}
+      {/* If you still want your "hide volume controls" CSS for the preview only, keep it.
+          But we will NOT hide volume controls in the modal (so it’s fully interactive). */}
       <style>{`
-        .uav-video::-webkit-media-controls-mute-button,
-        .uav-video::-webkit-media-controls-volume-slider,
-        .uav-video::-webkit-media-controls-volume-control-container,
-        .uav-video::-webkit-media-controls-volume-control-container.closed,
-        .uav-video::-webkit-media-controls-volume-control-container.open {
+        .uav-preview::-webkit-media-controls {
           display: none !important;
         }
       `}</style>
@@ -169,8 +348,8 @@ export default function Experience() {
               </div>
 
               {/* ✅ CONDITIONAL LAYOUT */}
-              {exp.video ? (
-                // WITH VIDEO: text left, video right
+              {exp.media ? (
+                // ✅ forREAL: MEDIA GALLERY
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                   {/* LEFT: Description */}
                   <ul className="list-disc pl-5 space-y-2 text-gray-200 leading-relaxed">
@@ -179,33 +358,111 @@ export default function Experience() {
                     ))}
                   </ul>
 
-                  {/* RIGHT: Video (scrubbable, forced-muted, hide volume UI) */}
-                  <div className="rounded-xl overflow-hidden border border-white/10 bg-black">
+                  {/* RIGHT: Media grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {exp.media.map((m, i) => (
+                      <button
+                        key={`${m.type}-${i}`}
+                        type="button"
+                        className="group relative rounded-xl overflow-hidden border border-white/10 bg-black text-left"
+                        onClick={() => {
+                          if (m.type === "video") {
+                            setActiveVideo({
+                              src: m.src,
+                              title: m.caption || `${exp.role} — ${exp.company}`,
+                            });
+                          } else {
+                            setActiveImage({
+                              src: m.src,
+                              title: m.caption || `${exp.role} — ${exp.company}`,
+                            });
+                          }
+                        }}
+                        aria-label="Open media"
+                      >
+                        {m.type === "video" ? (
+                          <video
+                            src={m.src}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-[140px] md:h-[160px] object-cover"
+                            onVolumeChange={(e) => {
+                              e.currentTarget.muted = true;
+                              e.currentTarget.volume = 0;
+                            }}
+                            onPlay={(e) => {
+                              e.currentTarget.muted = true;
+                              e.currentTarget.volume = 0;
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src={m.src}
+                            alt={m.caption || "Media"}
+                            className="w-full h-[140px] md:h-[160px] object-cover"
+                            draggable={false}
+                          />
+                        )}
+
+                        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/35 transition-colors" />
+                        <div className="absolute bottom-2 left-2">
+                          <span className="text-[11px] px-2 py-1 rounded-full bg-black/60 border border-white/10 text-gray-100">
+                            Click to expand
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : exp.video ? (
+                // ✅ UAV: SINGLE VIDEO (your existing code)
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                  <ul className="list-disc pl-5 space-y-2 text-gray-200 leading-relaxed">
+                    {exp.highlights.map((pt) => (
+                      <li key={pt}>{pt}</li>
+                    ))}
+                  </ul>
+
+                  <button
+                    type="button"
+                    className="group relative rounded-xl overflow-hidden border border-white/10 bg-black text-left"
+                    onClick={() =>
+                      setActiveVideo({
+                        src: exp.video.src,
+                        title: `${exp.role} — ${exp.company}`,
+                      })
+                    }
+                    aria-label="Open video"
+                  >
                     <video
                       src={exp.video.src}
-                      controls
+                      autoPlay
+                      loop
                       muted
                       playsInline
                       preload="metadata"
-                      className="uav-video w-full h-[260px] md:h-[320px] object-cover"
-                      onVolumeChange={(e) => {
-                        e.currentTarget.muted = true;
-                        e.currentTarget.volume = 0;
-                      }}
-                      onPlay={(e) => {
-                        e.currentTarget.muted = true;
-                        e.currentTarget.volume = 0;
-                      }}
+                      className="uav-preview w-full h-[260px] md:h-[320px] object-cover"
                     />
+
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors" />
+                    <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                      <span className="text-xs px-2 py-1 rounded-full bg-black/60 border border-white/10 text-gray-100">
+                        Click to expand
+                      </span>
+                    </div>
+
                     {exp.video.caption && (
-                      <div className="text-xs text-gray-300 px-3 py-2 bg-black/60">
+                      <div className="text-xs text-gray-300 px-3 py-2 bg-black/60 border-t border-white/10">
                         {exp.video.caption}
                       </div>
                     )}
-                  </div>
+                  </button>
                 </div>
               ) : (
-                // NO VIDEO: full-width text
+                // ✅ TEXT ONLY
                 <ul className="list-disc pl-5 space-y-2 text-gray-200 leading-relaxed">
                   {exp.highlights.map((pt) => (
                     <li key={pt}>{pt}</li>
@@ -216,6 +473,22 @@ export default function Experience() {
           ))}
         </div>
       </div>
+
+      {/* Modal */}
+      <VideoModal
+        open={!!activeVideo}
+        onClose={() => setActiveVideo(null)}
+        src={activeVideo?.src}
+        title={activeVideo?.title}
+      />
+
+      <ImageModal
+        open={!!activeImage}
+        onClose={() => setActiveImage(null)}
+        src={activeImage?.src}
+        title={activeImage?.title}
+      />
+
     </section>
   );
 }
